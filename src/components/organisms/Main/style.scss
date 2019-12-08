@@ -1,0 +1,17 @@
+main {
+  section {
+    flex: 1;
+    display: flex;
+    flex-flow: column nowrap;
+    text-align: left;
+
+    h1 {
+      margin: 10px;
+    }
+
+    .no-results {
+      color: var(--greymedium);
+      font-weight: 600;
+    }
+  }
+}

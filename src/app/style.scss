@@ -1,0 +1,48 @@
+.app {
+  text-align: center;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-flow: column nowrap;
+
+  & > {
+    header,
+    main,
+    footer {
+      position: relative;
+      padding: 6px 10px;
+    }
+
+    header {
+      align-items: center;
+      background-color: var(--primary);
+      box-shadow: 0 6px 16px var(--shade);
+      display: flex;
+      flex: 0 1 50px;
+      flex-flow: row wrap;
+      justify-content: center;
+
+      svg {
+        fill: var(--white) !important;
+        filter: drop-shadow(1px 1px 1px var(--shade));
+      }
+    }
+
+    main {
+      display: flex;
+      flex-flow: column nowrap;
+      flex: 1 0 auto;
+      padding: 20px 20px 0;
+      overflow: visible;
+      align-items: center;
+      justify-content: center;
+      height: calc(100vh - 78px);
+    }
+
+    footer {
+      color: var(--black);
+      font-family: monospace;
+      flex: 0 1 auto;
+    }
+  }
+}

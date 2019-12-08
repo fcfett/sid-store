@@ -1,0 +1,118 @@
+@import "../../../assets/styles/global";
+
+#app-modal {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+  position: fixed;
+  opacity: 0;
+  z-index: -1;
+
+  &,
+  & ~ main,
+  & ~ header,
+  & ~ aside {
+    transition: 0.45s ease-out !important;
+    transition-property: filter, opacity;
+  }
+
+  &.visible {
+    opacity: 1;
+    z-index: 999;
+    & ~ main,
+    & ~ header,
+    & ~ aside {
+      filter: blur(6px);
+      overflow: hidden;
+    }
+    .modal {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  &,
+  .backdrop {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+  }
+
+  .backdrop {
+    background: var(--shade);
+    position: absolute;
+    z-index: 1;
+  }
+
+  .modal {
+    @extend .card;
+    padding: 0;
+    margin: 20px;
+    display: flex;
+    flex-flow: column nowrap;
+    height: auto;
+    max-width: 480px !important;
+    overflow: visible;
+    opacity: 0;
+    position: relative;
+    text-align: center;
+    width: 100%;
+    z-index: 2;
+    transition: 0.35s cubic-bezier(0.6, -0.25, 0.45, 1.25);
+    transition-property: opacity, transform;
+    transform: translateY(300%) scale(0);
+
+    footer {
+      display: flex;
+      border-top: 1px solid var(--background);
+      button {
+        box-shadow: none;
+        font-size: 1rem;
+        padding: 24px 30px;
+        &:nth-child(1) {
+          border-radius: 0 0 0 8px;
+        }
+        &:nth-child(2) {
+          border-radius: 0 0 8px 0;
+        }
+        &:only-of-type {
+          border-radius: 0 0 8px 8px;
+        }
+      }
+    }
+
+    main {
+      padding: 20px 40px 30px;
+      font-size: 1rem;
+      p {
+        margin: 0;
+      }
+    }
+
+    header {
+      padding: 30px 40px 0;
+
+      h1 {
+        margin: 0;
+        font-size: 1.4rem;
+        color: var(--secondary);
+      }
+
+      .btn-close {
+        position: absolute;
+        right: -20px;
+        top: -20px;
+        margin: 0;
+        svg {
+          transform: rotate(45deg);
+          &,
+          svg {
+            fill: var(--primary);
+          }
+        }
+      }
+    }
+  }
+}
