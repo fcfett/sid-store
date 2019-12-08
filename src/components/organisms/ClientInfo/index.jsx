@@ -3,7 +3,7 @@ import './style.scss';
 
 export default ({ nome, cpf }) => {
   return (
-    <ul>
+    <ul className="client-info">
       <li>
         Nome: <strong>{nome}</strong>
       </li>
