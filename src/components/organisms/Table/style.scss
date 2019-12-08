@@ -98,6 +98,26 @@
       border-collapse: separate;
       overflow: hidden;
       position: relative;
+
+      tbody tr:not(.animated) {
+        animation: fadein 0.35s forwards;
+        opacity: 0;
+        transform: scale(0);
+        $delay: 0.075s;
+
+        @keyframes fadein {
+          to {
+            transform: scale(1);
+            opacity: 1;
+          }
+        }
+
+        @for $i from 2 to 10 {
+          &:nth-of-type(#{$i}) {
+            animation-delay: #{$delay * $i};
+          }
+        }
+      }
     }
 
     &.tfoot {
@@ -140,7 +160,7 @@
 
       &:before {
         background-image: linear-gradient(to bottom, transparent, var(--white));
-        content: "";
+        content: '';
         display: block;
         height: 20px;
         position: absolute;
@@ -206,7 +226,7 @@
       }
 
       &:after {
-        content: "";
+        content: '';
         display: block;
         height: 100%;
         max-height: 64px;
@@ -225,7 +245,7 @@
         &:before {
           background-image: linear-gradient(to left, transparent, var(--white));
           bottom: 0;
-          content: "";
+          content: '';
           left: 0;
           position: absolute;
           top: 0;
@@ -382,7 +402,7 @@
 
           &:before,
           &:after {
-            content: "";
+            content: '';
             height: 100%;
             position: absolute;
             bottom: 0;
@@ -391,20 +411,12 @@
           }
 
           &:before {
-            background-image: linear-gradient(
-              to left,
-              transparent,
-              var(--greylight)
-            );
+            background-image: linear-gradient(to left, transparent, var(--greylight));
             border-radius: 6px 0 0 6px;
             left: 0;
           }
           &:after {
-            background-image: linear-gradient(
-              to right,
-              transparent,
-              var(--greylight)
-            );
+            background-image: linear-gradient(to right, transparent, var(--greylight));
             border-radius: 0 6px 6px 0;
             right: 0;
           }

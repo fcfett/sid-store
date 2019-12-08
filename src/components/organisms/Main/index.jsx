@@ -50,12 +50,22 @@ export default () => {
   return (
     <main>
       <section className="card">
-        <h1>Clientes</h1>
+        <header>
+          <h1>Clientes</h1>
+          {store.loaded && (
+            <aside>
+              <Dropdown
+                id="filters-dropdown"
+                ref={dropdownRef}
+                data={dropdownOptions}
+                model={parksDropdownOptionModel}
+              />
+            </aside>
+          )}
+        </header>
+
         {(!store.loaded && <Loader />) || (
-          <>
-            <Dropdown id="filters-dropdown" ref={dropdownRef} data={dropdownOptions} model={parksDropdownOptionModel} />
-            <Table id="users-list" data={store.data} loaded={store.loaded} columns={columns} actions={actions} />
-          </>
+          <Table id="users-list" data={store.data} loaded={store.loaded} columns={columns} actions={actions} />
         )}
       </section>
     </main>

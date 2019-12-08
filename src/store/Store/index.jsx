@@ -41,7 +41,7 @@ export const StoreProvider = ({ children }) => {
     if (!hasStore) updateState({ loaded: false });
   }, []); // eslint-disable-line
 
-  const optimizeData = (clients, history) => {
+  const getRefinedData = (clients, history) => {
     const data = [];
     for (const client of clients.data) {
       const historico = history.data.filter((h) => +h.cliente.replace(/\./g, '') === client.id);
@@ -56,14 +56,16 @@ export const StoreProvider = ({ children }) => {
         valor: getMaxValue(compras['2019'].map((compra) => compra.valorTotal)),
         volume: getMaxValue(compras['2019'].map((compra) => compra.itens.length))
       };
-      data.push({ ...client, compras });
+
+      const recomendacao = '';
+      data.push({ ...client, compras, recomendacao });
     }
     return data;
   };
 
   useEffect(() => {
     if (!hasStore && hasClients && hasHistory) {
-      const data = optimizeData(clients, history);
+      const data = getRefinedData(clients, history);
       updateState({ loaded: true, data });
     }
   }, [clients, history]); // eslint-disable-line

@@ -9,6 +9,24 @@ main {
       margin: 10px;
     }
 
+    header {
+      display: flex;
+      flex-flow: row wrap;
+      margin: 0 10px 10px;
+
+      aside {
+        display: flex;
+        flex: 1;
+        justify-content: flex-end;
+        max-width: 100%;
+      }
+
+      h1 {
+        margin: 10px 10px 10px 0;
+        flex: 1 0 auto;
+      }
+    }
+
     .no-results {
       color: var(--greymedium);
       font-weight: 600;
