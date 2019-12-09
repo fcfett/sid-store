@@ -56,6 +56,12 @@ main {
             top: 0;
             transform: translate(4px, -30%);
             z-index: 1;
+
+            @media (max-width: 1024px) {
+              font-size: 9px;
+              top: 100%;
+              transform: translate(4px, -50%);
+            }
           }
         }
       }
