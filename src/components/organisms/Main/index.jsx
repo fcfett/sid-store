@@ -3,7 +3,9 @@ import './style.scss';
 
 import { StoreContext } from '../../../store/Store';
 import { ModalContext } from '../../../store/Modal';
-//import { sortByKey } from "../../../utils/helpers";
+import { sortByKey, areEqualObjects } from '../../../utils/helpers';
+import Mutations from '../../../utils/mutations';
+
 import Loader from '../../atoms/Loader';
 import Dropdown from '../../molecules/Dropdown';
 import Table from '../Table';
@@ -11,11 +13,11 @@ import ClientInfo from '../ClientInfo';
 import Actions from '../../../utils/actions';
 
 export default () => {
-  const { state: store /*, setState: setStore*/ } = useContext(StoreContext);
+  const { state: store, setState: setStore } = useContext(StoreContext);
   const { setState: setModal } = useContext(ModalContext);
+  const { data, loaded } = store;
 
   const detail = (client) => {
-    console.log(client);
     const title = 'Dados do Cliente';
     const content = <ClientInfo {...client} />;
     setModal({ visible: true, content, title });
@@ -23,7 +25,21 @@ export default () => {
 
   const columns = {
     nome: 'Cliente',
-    cpf: 'CPF'
+    cpf: 'CPF',
+    valorTotal: 'Total em Compras'
+  };
+
+  const dataClasses = {
+    'maior-valor': (item) => item.hasOwnProperty('maiorValor'),
+    'maior-volume': (item) => item.hasOwnProperty('maiorVolume')
+  };
+
+  const mutations = {
+    valorTotal: { handler: Mutations.FormatMoney }
+  };
+
+  const totalizers = {
+    valorTotal: Mutations.TotalizerType.SUM
   };
 
   const actions = [
@@ -35,15 +51,29 @@ export default () => {
 
   const dropdownRef = createRef();
   const dropdownOptions = [
-    { key: 'Maior Valor Total', value: 'valorTotal' },
-    { key: 'Maior Número de Compras em 2018', value: 'quantidadeCompras2018' },
-    { key: 'Maior compra de 2019 (Valor)', value: 'maiorCompra2019Valor' },
-    { key: 'Maior compra de 2019 (Número de Itens)', value: 'maiorCompra2019Volume' }
+    { name: 'Menor valor total', value: { key: 'valorTotal', order: 'ASC' } },
+    { name: 'Maior número de compras em 2018', value: { key: 'quantidadeCompras2018', order: 'DESC' } }
   ];
+
   const parksDropdownOptionModel = {
-    key: 'key',
-    value: {
-      parkId: 'id'
+    key: 'name',
+    value: 'value'
+  };
+
+  const sortData = () => {
+    const dropdown = dropdownRef.current;
+    if (dropdown) {
+      const { selected } = dropdown.state;
+      const {
+        value: { key, order }
+      } = selected[0] || {};
+      const sortedData = sortByKey(data.slice(), key, order === 'ASC');
+      if (!areEqualObjects(data, sortData)) {
+        setStore({ data: [] });
+        setTimeout(() => {
+          setStore({ data: sortedData });
+        });
+      }
     }
   };
 
@@ -59,13 +89,23 @@ export default () => {
                 ref={dropdownRef}
                 data={dropdownOptions}
                 model={parksDropdownOptionModel}
+                selected={dropdownOptions[0]}
+                onChange={sortData}
               />
             </aside>
           )}
         </header>
-
         {(!store.loaded && <Loader />) || (
-          <Table id="users-list" data={store.data} loaded={store.loaded} columns={columns} actions={actions} />
+          <Table
+            id="client-list"
+            data={data}
+            dataClasses={dataClasses}
+            loaded={loaded}
+            columns={columns}
+            mutations={mutations}
+            actions={actions}
+            totalizers={totalizers}
+          />
         )}
       </section>
     </main>

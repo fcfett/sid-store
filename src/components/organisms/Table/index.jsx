@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef } from 'react';
 import './style.scss';
 
 import Icon from '../../atoms/Icon';
@@ -51,16 +51,26 @@ const renderHeadings = (tableId, arrCols, colsWidth) =>
     </th>
   ));
 
-const renderRows = (tableId, data, computedData, columns, actions, colsWidth) =>
+const getDataClasses = (item, dataClasses) => {
+  const classes = [];
+  for (const [className, condition] of Object.entries(dataClasses)) {
+    if (condition(item)) classes.push(className);
+  }
+  return classes;
+};
+
+const renderRows = (tableId, data, computedData, columns, actions, colsWidth, dataClasses) =>
   computedData.map((item, index) => {
     const rowId = `${tableId}-tr-${index}`;
     const actionsLength = actions.length;
+    const classes = getDataClasses(data[index], dataClasses).join(' ');
     const [animated, setAnimated] = useState(false);
     setTimeout(() => setAnimated(true), (index + 1) * 350);
     return (
       <tr
         key={rowId}
-        className={`${actionsLength > 0 ? `actions-count-${actionsLength}` : ''} ${animated ? 'animated' : ''}`}
+        className={`${actionsLength > 0 ? `actions-count-${actionsLength}` : ''} ${classes}
+        ${animated ? 'animated' : ''}`}
       >
         {renderCells(rowId, colsWidth, item, columns)}
         {actionsLength > 0 && renderActionsCell(rowId, data[index], actions)}
@@ -154,13 +164,15 @@ const renderTotalizer = (key, value, header, colsWidth) => {
   );
 };
 
-export default (props) => {
+const Table = (props, ref) => {
   const { id, loaded } = props;
   const data = props.data || [];
+  const dataClasses = props.dataClasses || {};
   const columns = props.columns || {};
   const mutations = props.mutations || {};
   const actions = props.actions || {};
   const totalizers = props.totalizers || {};
+  const bindRef = ref ? { ref } : null;
 
   const computedColumns = getColumnsArray(data, columns);
   const columnsWidth = 100 / (Object.keys(columns).length || 1) + '%';
@@ -182,8 +194,10 @@ export default (props) => {
         </thead>
       </table>
       <table className="tbody">
-        <tbody>
-          {loaded && hasData && <>{renderRows(tableId, data, computedData, columns, actions, columnsWidth)}</>}
+        <tbody {...bindRef}>
+          {loaded && hasData && (
+            <>{renderRows(tableId, data, computedData, columns, actions, columnsWidth, dataClasses)}</>
+          )}
           {(!loaded || (loaded && !hasData)) && (
             <tr>
               <td>
@@ -211,3 +225,5 @@ export default (props) => {
     </div>
   );
 };
+
+export default forwardRef(Table);

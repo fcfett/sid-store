@@ -1,4 +1,4 @@
-@import "../../../assets/styles/global";
+@import '../../../assets/styles/global';
 
 #app-modal {
   align-items: center;
@@ -53,6 +53,7 @@
     display: flex;
     flex-flow: column nowrap;
     height: auto;
+    max-height: 100% !important;
     max-width: 480px !important;
     overflow: visible;
     opacity: 0;
@@ -86,6 +87,7 @@
     main {
       padding: 20px 40px 30px;
       font-size: 1rem;
+      overflow: auto;
       p {
         margin: 0;
       }

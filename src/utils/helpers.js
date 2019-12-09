@@ -1,30 +1,31 @@
-import localStorage from "local-storage";
+import localStorage from 'local-storage';
 
-export const getEmptyPlaceholder = () => "–";
+export const getEmptyPlaceholder = () => '–';
 
-export const deepCopy = object => JSON.parse(JSON.stringify(object));
+export const deepCopy = (object) => JSON.parse(JSON.stringify(object));
 
-export const areEqualObjects = (obj1, obj2) =>
-  JSON.stringify(obj1) === JSON.stringify(obj2);
+export const areEqualObjects = (obj1, obj2) => JSON.stringify(obj1) === JSON.stringify(obj2);
 
 export const isGreaterThan = (a, b) => (a > b ? 1 : a < b ? -1 : 0);
 
 export const isLowerThan = (a, b) => (a < b ? 1 : a > b ? -1 : 0);
 
-export const getMinValue = arrValues => Math.max.apply(Math, arrValues);
+export const getMinValue = (arrValues) => Math.max.apply(Math, arrValues);
 
-export const getMaxValue = arrValues => Math.max.apply(Math, arrValues);
+export const getMaxValue = (arrValues) => Math.max.apply(Math, arrValues);
+
+export const getHigherOccurrence = (arrValues) =>
+  arrValues
+    .slice()
+    .sort((a, b) => arrValues.filter((v) => v === a).length - arrValues.filter((v) => v === b).length)
+    .pop();
 
 export const sortByKey = (data, key, orderASC = true) =>
-  !Array.isArray(data)
-    ? data
-    : data.sort((a, b) =>
-        (orderASC ? isGreaterThan : isLowerThan)(a[key], b[key])
-      );
+  !Array.isArray(data) ? data : data.sort((a, b) => (orderASC ? isGreaterThan : isLowerThan)(a[key], b[key]));
 
-export const getFormattedDateString = strDate => {
+export const getFormattedDateString = (strDate) => {
   const rgxDate = /(\d{4})[-/](\d{2})[-/](\d{2})/;
-  return strDate.toString().replace(rgxDate, "$2/$3/$1");
+  return strDate.toString().replace(rgxDate, '$2/$3/$1');
 };
 
 export const getLocalStorageObject = (lsId, arrProps = []) => {
@@ -77,6 +78,7 @@ export default {
   areEqualObjects,
   fetchStoreRequest,
   getEmptyPlaceholder,
+  getHigherOccurrence,
   getLocalStorageObject,
   setLocalStorageObject,
   getFormattedDateString

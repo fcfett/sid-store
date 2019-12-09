@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
-import { getMaxValue, getLocalStorageObject, setLocalStorageObject } from '../../utils/helpers';
+import { getMaxValue, getHigherOccurrence, getLocalStorageObject, setLocalStorageObject } from '../../utils/helpers';
 import { ClientsContext } from '../Clients';
 import { HistoryContext } from '../History';
 
@@ -32,7 +32,6 @@ export const StoreProvider = ({ children }) => {
 
   const { state: clients } = useContext(ClientsContext);
   const { state: history } = useContext(HistoryContext);
-
   const hasStore = state.loaded && state.data.length > 0;
   const hasClients = clients.loaded && clients.data.length > 0;
   const hasHistory = history.loaded && history.data.length > 0;
@@ -41,31 +40,49 @@ export const StoreProvider = ({ children }) => {
     if (!hasStore) updateState({ loaded: false });
   }, []); // eslint-disable-line
 
+  const setGreaterValues = (data) => {
+    const clienteMaiorValor = data.reduce((prev, current) =>
+      prev.maiorCompra2019Valor > current.maiorCompra2019Valor ? prev : current
+    );
+    const clienteMaiorVolume = data.reduce((prev, current) =>
+      prev.maiorCompra2019Volume > current.maiorCompra2019Volume ? prev : current
+    );
+
+    data.forEach((client) => {
+      if (client.id === clienteMaiorValor.id) client.maiorValor = true;
+      if (client.id === clienteMaiorVolume.id) client.maiorVolume = true;
+    });
+
+    return data;
+  };
+
   const getRefinedData = (clients, history) => {
     const data = [];
     for (const client of clients.data) {
       const historico = history.data.filter((h) => +h.cliente.replace(/\./g, '') === client.id);
       const valorTotal = historico.reduce((acc, compra) => acc + compra.valorTotal, 0);
-      const compras = {
-        2018: historico.filter((compra) => compra.data.includes('2018')),
-        2019: historico.filter((compra) => compra.data.includes('2019')),
-        valorTotal
-      };
-      compras.quantidadeCompras2018 = compras['2018'].length;
-      compras.maiorCompra2019 = {
-        valor: getMaxValue(compras['2019'].map((compra) => compra.valorTotal)),
-        volume: getMaxValue(compras['2019'].map((compra) => compra.itens.length))
-      };
-
-      const recomendacao = '';
-      data.push({ ...client, compras, recomendacao });
+      const compras2018 = historico.filter((compra) => compra.data.includes('2018'));
+      const compras2019 = historico.filter((compra) => compra.data.includes('2019'));
+      const quantidadeCompras2018 = compras2018.length;
+      const maiorCompra2019Valor = getMaxValue(compras2019.map((compra) => compra.valorTotal));
+      const maiorCompra2019Volume = getMaxValue(compras2019.map((compra) => compra.itens.length));
+      const recomendacao = getHigherOccurrence(historico.flatMap((compra) => compra.itens.map((item) => item.produto)));
+      data.push({
+        ...client,
+        historico,
+        valorTotal,
+        quantidadeCompras2018,
+        maiorCompra2019Valor,
+        maiorCompra2019Volume,
+        recomendacao
+      });
     }
     return data;
   };
 
   useEffect(() => {
     if (!hasStore && hasClients && hasHistory) {
-      const data = getRefinedData(clients, history);
+      const data = setGreaterValues(getRefinedData(clients, history));
       updateState({ loaded: true, data });
     }
   }, [clients, history]); // eslint-disable-line

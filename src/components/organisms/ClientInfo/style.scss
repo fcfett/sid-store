@@ -1,9 +1,22 @@
 ul.client-info {
   list-style: none;
-  margin: 0;
+  margin: 0 -40px 0;
   padding: 0;
+  text-align: left;
 
   li {
-    margin: 10px 0;
+    color: var(--greymedium);
+    display: flex;
+    padding: 10px 20px;
+
+    &:nth-of-type(odd) {
+      background-color: var(--background);
+    }
+    strong {
+      color: var(--black);
+      flex: 1;
+      font-weight: 600;
+      text-align: right;
+    }
   }
 }

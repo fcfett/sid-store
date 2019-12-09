@@ -7,6 +7,7 @@ main {
 
     h1 {
       margin: 10px;
+      color: var(--secondary);
     }
 
     header {
@@ -30,6 +31,44 @@ main {
     .no-results {
       color: var(--greymedium);
       font-weight: 600;
+    }
+
+    .app-table tr {
+      &.maior-valor,
+      &.maior-volume {
+        position: relative;
+
+        td:nth-last-of-type(2) {
+          position: relative;
+          overflow: visible;
+          &:after {
+            border-radius: 30px;
+            box-shadow: 0 4px 6px -2px var(--shade);
+            color: var(--white);
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 500;
+            padding: 4px 14px;
+            position: absolute;
+            right: 0;
+            text-transform: uppercase;
+            text-shadow: 1px 1px 1px var(--shade);
+            top: 0;
+            transform: translate(4px, -30%);
+            z-index: 1;
+          }
+        }
+      }
+
+      &.maior-valor td:nth-last-of-type(2):after {
+        content: 'Maior total único de 2019';
+        background: var(--primary);
+      }
+
+      &.maior-volume td:nth-last-of-type(2):after {
+        content: 'Maior volume único de 2019';
+        background: var(--secondary);
+      }
     }
   }
 }
