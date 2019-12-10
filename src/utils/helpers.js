@@ -56,16 +56,16 @@ export const setLocalStorageObject = (lsId, obj = {}) => {
   return newObj;
 };
 
-export const fetchStoreRequest = (request, setter) => {
-  setter({ loaded: false });
-  request()
-    .then(({ data }) => {
-      setter({ data });
-    })
-    .catch(console.error)
-    .finally(() => {
-      setter({ loaded: true });
-    });
+export const fetchStoreRequest = async (request, setter) => {
+  try {
+    setter({ loaded: false });
+    const { data } = await request();
+    setter({ data });
+  } catch (error) {
+    console.error(error);
+  } finally {
+    setter({ loaded: true });
+  }
 };
 
 export default {
