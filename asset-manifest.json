@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/sid-store/static/css/main.10d22cf7.chunk.css",
+    "main.js": "/sid-store/static/js/main.3940a71b.chunk.js",
+    "main.js.map": "/sid-store/static/js/main.3940a71b.chunk.js.map",
+    "runtime-main.js": "/sid-store/static/js/runtime-main.080a4913.js",
+    "runtime-main.js.map": "/sid-store/static/js/runtime-main.080a4913.js.map",
+    "static/js/2.ea0a22ab.chunk.js": "/sid-store/static/js/2.ea0a22ab.chunk.js",
+    "static/js/2.ea0a22ab.chunk.js.map": "/sid-store/static/js/2.ea0a22ab.chunk.js.map",
+    "index.html": "/sid-store/index.html",
+    "precache-manifest.6d7cb66513623c5b2cba480b312000d4.js": "/sid-store/precache-manifest.6d7cb66513623c5b2cba480b312000d4.js",
+    "service-worker.js": "/sid-store/service-worker.js",
+    "static/css/main.10d22cf7.chunk.css.map": "/sid-store/static/css/main.10d22cf7.chunk.css.map",
+    "static/js/2.ea0a22ab.chunk.js.LICENSE": "/sid-store/static/js/2.ea0a22ab.chunk.js.LICENSE",
+    "static/media/angle-down.56c8ef7f.svg": "/sid-store/static/media/angle-down.56c8ef7f.svg",
+    "static/media/logo.bda910fc.svg": "/sid-store/static/media/logo.bda910fc.svg",
+    "static/media/magnify.551d595e.svg": "/sid-store/static/media/magnify.551d595e.svg",
+    "static/media/plus.a1148ea0.svg": "/sid-store/static/media/plus.a1148ea0.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.080a4913.js",
+    "static/js/2.ea0a22ab.chunk.js",
+    "static/css/main.10d22cf7.chunk.css",
+    "static/js/main.3940a71b.chunk.js"
+  ]
+}
